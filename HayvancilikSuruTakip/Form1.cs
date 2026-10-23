@@ -10,11 +10,218 @@ using System.Windows.Forms;
 
 namespace HayvancilikSuruTakip
 {
-    public partial class Form1 : Form
+    public partial class btnListele : Form
     {
-        public Form1()
+        public btnListele()
         {
             InitializeComponent();
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+            try
+            {
+                using (var connection =
+                    HayvancilikSuruTakip.Data.DatabaseConnection.GetConnection())
+                {
+                    connection.Open();
+
+                    MessageBox.Show("Veritabanı bağlantısı başarılı!");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Bağlantı hatası: " + ex.Message);
+            }
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+            try
+            {
+                var repository =
+                    new HayvancilikSuruTakip.Data.HayvanRepository();
+
+                dgvHayvanlar.DataSource =
+                    repository.HayvanlariListele();
+
+                MessageBox.Show("Hayvanlar başarıyla listelendi.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Hata: " + ex.Message);
+            }
+
+        }
+
+        private void btnEkle_Click(object sender, EventArgs e)
+        {
+
+            try
+            {
+                if (string.IsNullOrWhiteSpace(txtKupeNo.Text) ||
+                    string.IsNullOrWhiteSpace(txtHayvanAdi.Text) ||
+                    string.IsNullOrWhiteSpace(txtTur.Text) ||
+                    string.IsNullOrWhiteSpace(txtCinsiyet.Text))
+                {
+                    MessageBox.Show("Lütfen tüm alanları doldurun.");
+                    return;
+                }
+
+                var repository =
+                    new HayvancilikSuruTakip.Data.HayvanRepository();
+
+                repository.HayvanEkle(
+                    txtKupeNo.Text.Trim(),
+                    txtHayvanAdi.Text.Trim(),
+                    txtTur.Text.Trim(),
+                    txtCinsiyet.Text.Trim()
+                );
+
+                MessageBox.Show("Hayvan başarıyla eklendi!");
+
+                dgvHayvanlar.DataSource =
+                    repository.HayvanlariListele();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Kayıt hatası: " + ex.Message);
+            }
+
+        }
+
+        private void dgvHayvanlar_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        {
+            if (e.RowIndex < 0)
+                return;
+
+            DataGridViewRow satir =
+                dgvHayvanlar.Rows[e.RowIndex];
+
+            if (satir.Cells["HayvanID"].Value == null)
+                return;
+
+            txtKupeNo.Text =
+                Convert.ToString(satir.Cells["KupeNo"].Value);
+
+            txtHayvanAdi.Text =
+                Convert.ToString(satir.Cells["HayvanAdi"].Value);
+
+            txtTur.Text =
+                Convert.ToString(satir.Cells["Tur"].Value);
+
+            txtCinsiyet.Text =
+                Convert.ToString(satir.Cells["Cinsiyet"].Value);
+        }
+
+
     }
-}
+
+        private void btnGuncelle_Click(object sender, EventArgs e)
+        {
+
+
+            try
+            {
+                if (dgvHayvanlar.CurrentRow == null ||
+                    dgvHayvanlar.CurrentRow.IsNewRow)
+                {
+                    MessageBox.Show("Önce listeden bir hayvan seçin.");
+                    return;
+                }
+
+                int hayvanID = Convert.ToInt32(
+                    dgvHayvanlar.CurrentRow.Cells["HayvanID"].Value);
+
+                string yeniAd = txtHayvanAdi.Text.Trim();
+                string yeniTur = txtTur.Text.Trim();
+                string yeniCinsiyet = txtCinsiyet.Text.Trim();
+
+                if (string.IsNullOrWhiteSpace(yeniAd) ||
+                    string.IsNullOrWhiteSpace(yeniTur) ||
+                    string.IsNullOrWhiteSpace(yeniCinsiyet))
+                {
+                    MessageBox.Show("Lütfen tüm bilgileri doldurun.");
+                    return;
+                }
+
+                var repository =
+                    new HayvancilikSuruTakip.Data.HayvanRepository();
+
+                repository.HayvanGuncelle(
+                    hayvanID,
+                    yeniAd,
+                    yeniTur,
+                    yeniCinsiyet
+                );
+
+                MessageBox.Show("Güncelleme komutu çalıştırıldı. Listeyi kontrol edin.");
+
+                dgvHayvanlar.DataSource =
+                    repository.HayvanlariListele();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Güncelleme hatası: " + ex.Message);
+            }
+
+            MessageBox.Show("Hayvan başarıyla güncellendi!");
+            }
+
+        private void btnSil_Click(object sender, EventArgs e)
+        {
+
+            try
+            {
+                if (dgvHayvanlar.CurrentRow == null ||
+                    dgvHayvanlar.CurrentRow.IsNewRow ||
+                    dgvHayvanlar.CurrentRow.Cells["HayvanID"].Value == null)
+                {
+                    MessageBox.Show("Lütfen listeden bir hayvan seçin.");
+                    return;
+                }
+
+                int hayvanID = Convert.ToInt32(
+                    dgvHayvanlar.CurrentRow.Cells["HayvanID"].Value);
+
+                string hayvanAdi = Convert.ToString(
+                    dgvHayvanlar.CurrentRow.Cells["HayvanAdi"].Value);
+
+                DialogResult cevap = MessageBox.Show(
+                    hayvanAdi + " adlı hayvanı silmek istiyor musunuz?",
+                    "Silme Onayı",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+
+                if (cevap != DialogResult.Yes)
+                    return;
+
+                var repository =
+                    new HayvancilikSuruTakip.Data.HayvanRepository();
+
+                repository.HayvanSil(hayvanID);
+
+                MessageBox.Show("Hayvan başarıyla silindi!");
+
+                dgvHayvanlar.DataSource =
+                    repository.HayvanlariListele();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Silme hatası: " + ex.Message);
+            }
+
+        }
+    }
+    }
+
