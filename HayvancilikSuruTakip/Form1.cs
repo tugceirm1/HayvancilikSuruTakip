@@ -1,4 +1,6 @@
-﻿using System;
+﻿using HayvancilikSuruTakip.Security;
+using HayvancilikSuruTakip.Security.HayvancilikSuruTakip.Security;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,7 +16,47 @@ namespace HayvancilikSuruTakip
     {
         public btnListele()
         {
+            
             InitializeComponent();
+            if (Oturum.Rol == "Uzman")
+            {
+                btnEkle.Enabled = false;
+                btnGuncelle.Enabled = false;
+                btnSil.Enabled = false;
+            }
+
+            Label lblOturum = new Label
+            {
+                Text = "Kullanıcı: " + Oturum.KullaniciAdi +
+           " | Rol: " + Oturum.Rol,
+                AutoSize = true,
+                Location = new System.Drawing.Point(20, 60),
+                ForeColor = System.Drawing.Color.DarkBlue
+            };
+
+            Controls.Add(lblOturum);
+            lblOturum.BringToFront();
+            Button btnHesap = new Button
+            {
+                Text = "Hesap Bilgilerimi Değiştir",
+                Width = 210,
+                Height = 35,
+                Location = new Point(20, 20)
+            };
+
+            btnHesap.Click += (sender, e) =>
+            {
+                using (var form = new HesapDegistirForm())
+                {
+                    if (form.ShowDialog(this) == DialogResult.OK)
+                    {
+                        Close();
+                    }
+                }
+            };
+
+            Controls.Add(btnHesap);
+            btnHesap.BringToFront();
         }
 
         private void Form1_Load(object sender, EventArgs e)

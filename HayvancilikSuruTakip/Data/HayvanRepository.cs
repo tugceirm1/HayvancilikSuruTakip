@@ -1,4 +1,6 @@
 ﻿
+using HayvancilikSuruTakip.Security;
+using HayvancilikSuruTakip.Security.HayvancilikSuruTakip.Security;
 using System;
 using System.Data;
 using System.Data.SqlClient;
@@ -38,6 +40,7 @@ namespace HayvancilikSuruTakip.Data
             string tur,
             string cinsiyet)
         {
+            Oturum.CiftciYetkisiGerekli();
             using (SqlConnection baglanti =
                 DatabaseConnection.GetConnection())
             {
@@ -61,6 +64,7 @@ namespace HayvancilikSuruTakip.Data
 
                     baglanti.Open();
                     komut.ExecuteNonQuery();
+                   
                 }
             }
         }
@@ -72,6 +76,7 @@ namespace HayvancilikSuruTakip.Data
             string tur,
             string cinsiyet)
         {
+            Oturum.CiftciYetkisiGerekli();
             using (SqlConnection baglanti =
                 DatabaseConnection.GetConnection())
             {
@@ -103,6 +108,7 @@ namespace HayvancilikSuruTakip.Data
         // DELETE - Hayvan sil
         public void HayvanSil(int hayvanID)
         {
+            Oturum.CiftciYetkisiGerekli();
             using (SqlConnection baglanti =
                 DatabaseConnection.GetConnection())
             {
