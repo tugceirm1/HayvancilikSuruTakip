@@ -31,4 +31,24 @@ Katmanlı mimari kullanılacaktır.
 - Uyarilar
 
 ## Proje Durumu
-3. Hafta: Kurulum, mimari ve veri modeli tasarımı.
+## Proje Durumu
+
+### 3. Hafta – Proje Kurulumu
+- Visual Studio ile C# Windows Forms projesi oluşturuldu.
+- Katmanlı mimari ve veritabanı tabloları tasarlandı.
+- GitHub deposu oluşturuldu.
+
+### 4. Hafta – Veritabanı İşlemleri
+- SQL Server bağlantısı kuruldu.
+- Hayvan kayıtlarını listeleme, ekleme, güncelleme ve silme işlemleri geliştirildi.
+- Veritabanı SQL dosyası projeye eklendi.
+
+### 5. Hafta – Kullanıcı Yönetimi ve Güvenlik
+- Kullanıcı kayıt ve giriş ekranları oluşturuldu.
+- PBKDF2-SHA256 ile güvenli parola hashleme eklendi.
+- Oturum yönetimi geliştirildi.
+- Çiftçi ve Uzman rolleri oluşturuldu.
+- Rol bazlı erişim kontrolü uygulandı.
+- 5 hatalı girişte 15 dakika hesap kilitleme testi gerçekleştirildi.
+
+**Güncel Durum:** 5. hafta geliştirmeleri tamamlandı. Son güvenlik kontrolleri ve raporlama aşamasındadır.
