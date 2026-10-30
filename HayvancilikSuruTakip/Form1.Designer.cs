@@ -41,6 +41,10 @@
             this.label4 = new System.Windows.Forms.Label();
             this.btnGuncelle = new System.Windows.Forms.Button();
             this.btnSil = new System.Windows.Forms.Button();
+            this.txtAra = new System.Windows.Forms.TextBox();
+            this.btnAra = new System.Windows.Forms.Button();
+            this.cmbTurFiltre = new System.Windows.Forms.ComboBox();
+            this.btnFiltrele = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvHayvanlar)).BeginInit();
             this.SuspendLayout();
             // 
@@ -159,11 +163,54 @@
             this.btnSil.UseVisualStyleBackColor = true;
             this.btnSil.Click += new System.EventHandler(this.btnSil_Click);
             // 
+            // txtAra
+            // 
+            this.txtAra.Location = new System.Drawing.Point(760, 225);
+            this.txtAra.Name = "txtAra";
+            this.txtAra.Size = new System.Drawing.Size(100, 22);
+            this.txtAra.TabIndex = 14;
+            // 
+            // btnAra
+            // 
+            this.btnAra.Location = new System.Drawing.Point(865, 375);
+            this.btnAra.Name = "btnAra";
+            this.btnAra.Size = new System.Drawing.Size(75, 23);
+            this.btnAra.TabIndex = 15;
+            this.btnAra.Text = "Arama";
+            this.btnAra.UseVisualStyleBackColor = true;
+            this.btnAra.Click += new System.EventHandler(this.btnAra_Click);
+            // 
+            // cmbTurFiltre
+            // 
+            this.cmbTurFiltre.FormattingEnabled = true;
+            this.cmbTurFiltre.Items.AddRange(new object[] {
+            "tümü",
+            "buyukbas",
+            "kucukbas"});
+            this.cmbTurFiltre.Location = new System.Drawing.Point(760, 282);
+            this.cmbTurFiltre.Name = "cmbTurFiltre";
+            this.cmbTurFiltre.Size = new System.Drawing.Size(121, 24);
+            this.cmbTurFiltre.TabIndex = 16;
+            // 
+            // btnFiltrele
+            // 
+            this.btnFiltrele.Location = new System.Drawing.Point(744, 375);
+            this.btnFiltrele.Name = "btnFiltrele";
+            this.btnFiltrele.Size = new System.Drawing.Size(75, 23);
+            this.btnFiltrele.TabIndex = 18;
+            this.btnFiltrele.Text = "Filtreleme";
+            this.btnFiltrele.UseVisualStyleBackColor = true;
+            this.btnFiltrele.Click += new System.EventHandler(this.btnFiltrele_Click);
+            // 
             // btnListele
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1112, 610);
+            this.Controls.Add(this.btnFiltrele);
+            this.Controls.Add(this.cmbTurFiltre);
+            this.Controls.Add(this.btnAra);
+            this.Controls.Add(this.txtAra);
             this.Controls.Add(this.btnSil);
             this.Controls.Add(this.btnGuncelle);
             this.Controls.Add(this.label4);
@@ -200,6 +247,10 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnGuncelle;
         private System.Windows.Forms.Button btnSil;
+        private System.Windows.Forms.TextBox txtAra;
+        private System.Windows.Forms.Button btnAra;
+        private System.Windows.Forms.ComboBox cmbTurFiltre;
+        private System.Windows.Forms.Button btnFiltrele;
     }
 }
 

@@ -138,5 +138,23 @@ namespace HayvancilikSuruTakip
                 MessageBox.Show(ex.Message);
             }
         }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // HesapDegistirForm
+            // 
+            this.ClientSize = new System.Drawing.Size(282, 253);
+            this.Name = "HesapDegistirForm";
+            this.Load += new System.EventHandler(this.HesapDegistirForm_Load);
+            this.ResumeLayout(false);
+
+        }
+
+        private void HesapDegistirForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

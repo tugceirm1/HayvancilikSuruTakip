@@ -41,6 +41,38 @@ namespace HayvancilikSuruTakip.Data
             string cinsiyet)
         {
             Oturum.CiftciYetkisiGerekli();
+
+            if (string.IsNullOrWhiteSpace(kupeNo) ||
+                string.IsNullOrWhiteSpace(hayvanAdi) ||
+                string.IsNullOrWhiteSpace(tur) ||
+                string.IsNullOrWhiteSpace(cinsiyet))
+            {
+                throw new Exception("Hayvan bilgileri boş bırakılamaz!");
+            }
+
+            using (SqlConnection kontrolBaglantisi =
+                DatabaseConnection.GetConnection())
+            {
+                string kontrolSql =
+                    "SELECT COUNT(*) FROM dbo.Hayvanlar WHERE KupeNo = @KupeNo";
+
+                using (SqlCommand kontrolKomut =
+                    new SqlCommand(kontrolSql, kontrolBaglantisi))
+                {
+                    kontrolKomut.Parameters.AddWithValue("@KupeNo", kupeNo.Trim());
+
+                    kontrolBaglantisi.Open();
+
+                    int kayitSayisi = (int)kontrolKomut.ExecuteScalar();
+
+                    if (kayitSayisi > 0)
+                    {
+                        throw new Exception(
+                            "Bu küpe numarasına sahip bir hayvan zaten kayıtlı!");
+                    }
+                }
+            }
+
             using (SqlConnection baglanti =
                 DatabaseConnection.GetConnection())
             {
@@ -127,5 +159,43 @@ namespace HayvancilikSuruTakip.Data
                 }
             }
         }
+
+        public DataTable HayvanlariFiltrele(string kupeNo, string tur)
+        {
+            DataTable tablo = new DataTable();
+
+            using (SqlConnection baglanti =
+                DatabaseConnection.GetConnection())
+            {
+                string sql = @"
+            SELECT HayvanID, KupeNo, HayvanAdi,
+                   Tur, Cinsiyet
+            FROM dbo.Hayvanlar
+            WHERE (@KupeNo IS NULL OR KupeNo LIKE @KupeNo + '%')
+              AND (@Tur IS NULL OR Tur = @Tur)
+            ORDER BY HayvanID";
+
+                using (SqlCommand komut =
+                    new SqlCommand(sql, baglanti))
+                {
+                    komut.Parameters.Add("@KupeNo", SqlDbType.NVarChar, 100)
+                        .Value = string.IsNullOrWhiteSpace(kupeNo)
+                        ? (object)DBNull.Value : kupeNo.Trim();
+
+                    komut.Parameters.Add("@Tur", SqlDbType.NVarChar, 100)
+                        .Value = string.IsNullOrWhiteSpace(tur) || tur == "Tümü"
+                        ? (object)DBNull.Value : tur;
+
+                    using (SqlDataAdapter adapter =
+                        new SqlDataAdapter(komut))
+                    {
+                        adapter.Fill(tablo);
+                    }
+                }
+            }
+
+            return tablo;
+        }
+
     }
 }
